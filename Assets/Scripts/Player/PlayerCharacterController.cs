@@ -5,11 +5,14 @@ using UnityEngine;
 public class PlayerCharacterController : MonoBehaviour
 {
 
+    [SerializeField] AudioSource walkingOnGrass;
+    [SerializeField] AudioSource walkingOnHouseFloor;
+    AudioSource currentWalk;
     public CursorMode cursorMode = CursorMode.Auto;
-    [SerializeField] private float speed = 12f;
-    [SerializeField] private float Gravity = -9.81f;
-    [SerializeField] private Vector3 velocity;
-    [SerializeField] private float ejeX = 0f;
+    [SerializeField]private float speed = 4.1f;
+    private float Gravity = -9.81f;
+    private Vector3 velocity;
+    private float ejeX = 0f;
     [SerializeField] private GameObject[] keys;
     private CharacterController cc;
     public bool startedWalking = false;
@@ -25,8 +28,25 @@ public class PlayerCharacterController : MonoBehaviour
         Cursor.SetCursor(default, Vector2.zero, cursorMode);
         cc = GetComponent<CharacterController>();
     }
+    private void OnEnable()
+    {
+        FirstCinematic.OnFirstCinematic += ForFirstCinematic;
+        SecondCinematic.OnSecondCinematic += ForSecondCinematic;
+    }
+    private void OnDisable()
+    {
+        FirstCinematic.OnFirstCinematic -= ForFirstCinematic;
+        SecondCinematic.OnSecondCinematic -= ForSecondCinematic;
+    }
     void Update()
     {
+        if(currentWalk != null && currentWalk.isPlaying)
+        {
+            if(ControlPlayer.Instance.executing == true || GameManager.Instance.onPause == true)
+            {
+                currentWalk.Pause();
+            }
+        }
         if (ControlPlayer.Instance.executing != true && GameManager.Instance.onPause != true)
         {
             Move();
@@ -59,8 +79,14 @@ public class PlayerCharacterController : MonoBehaviour
             InventoryManager.Instance.RemoveItem();
         }
     }
-
-
+    void ForFirstCinematic()
+    {
+        currentWalk = walkingOnGrass;
+    }
+    void ForSecondCinematic()
+    {
+        currentWalk = walkingOnHouseFloor;
+    }
     void Rotate()
     {
         ejeX += Input.GetAxis("Mouse X");
@@ -75,7 +101,7 @@ public class PlayerCharacterController : MonoBehaviour
 
         Vector3 direction = transform.right * horizontal + transform.forward * vertical;
 
-
+     
         if (direction.magnitude >= 0.1f)
         {
             cc.Move(direction.normalized * speed * Time.deltaTime);
@@ -83,7 +109,8 @@ public class PlayerCharacterController : MonoBehaviour
             {
                 startedWalking = true;
                 NoiseManager.Instance.IncreaseNoise(30);
-
+                currentWalk.Play();
+                
             }
         }
         if (direction.magnitude == 0f)
@@ -93,6 +120,7 @@ public class PlayerCharacterController : MonoBehaviour
 
                 startedWalking = false;
                 NoiseManager.Instance.DecreaseNoise(30);
+                currentWalk.Stop();
             }
         }
     }

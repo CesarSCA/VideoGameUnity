@@ -17,7 +17,7 @@ public class GameMenu : MonoBehaviour
     public void DesPause()
     {
         GameManager.Instance.onPause = false;
-        GameManager.Instance.OnPause(false);
+        InGameController.Instance.OnPause(false);
     }
     public void StartGame()
     {
