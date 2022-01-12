@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class MiniCinematics : MonoBehaviour
 {
-    [SerializeField] GameObject UIThings;
     private void OnTriggerStay(Collider other)
     {
         if (ControlPlayer.Instance.executing != true)
@@ -26,23 +25,22 @@ public class MiniCinematics : MonoBehaviour
             if (cinematic != null)
             {
                 float time = obj.GetComponent<Timer>().time;
-                UIThings.SetActive(false);
+                InGameController.Instance.UIForGame.SetActive(false);
                 ControlPlayer.Instance.executing = true;
                 cinematic.OnStartCinematic();
                 yield return new WaitForSeconds(time);
-
+                if(ControlPlayer.Instance.executing == false)
+                {
+                yield break;
+                }
                 ControlPlayer.Instance.executing = false;
-                UIThings.SetActive(true);
+                InGameController.Instance.UIForGame.SetActive(true);
             }
             else if (text != null)
             {
-                ControlPlayer.Instance.executing = true;
                 TextingManager.Instance.Talk(text.Lines[0]);
-                ControlPlayer.Instance.executing = false;
-
             }
             Destroy(obj.gameObject);
-  
-
     }
+
 }

@@ -8,23 +8,38 @@ public class InventoryManager: MonoBehaviour
     protected InventoryManager() { }
 
     public static InventoryManager Instance;
+ 
 
     public Inventory inventory;
 
     private void Awake()
     {
+
         Instance = this;
         inventory = GameObject.Find("Player").GetComponent<Inventory>();
         inventory.slot.enabled = false;
     }
-    public void AddItem(ItemKey key)
+    private void Update()
     {
-                inventory.isFull = true;
-                inventory.slot.sprite = key.sprite;
-                inventory.slot.enabled = true;
+        if(inventory.item != null)
+        {
+            if (inventory.item.itemObject.GetComponent<GetItem>())
+            {
+                Debug.Log("anda");
+            }
+        }
+
+    }
+    public void AddItem(Item item)
+    {
+        inventory.item = item;
+        inventory.isFull = true;
+        inventory.slot.sprite = item.sprite;
+        inventory.slot.enabled = true;
     }
     public void RemoveItem()
     {
+        inventory.item = null;
         inventory.isFull = false;
         inventory.slot.sprite = null;
         inventory.slot.enabled = false;

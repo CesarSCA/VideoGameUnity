@@ -8,6 +8,8 @@ public class FinalPricesController : MonoBehaviour
 
     private void Start()
     {
+        Cursor.lockState = CursorLockMode.Confined;
+        Cursor.SetCursor(default, Vector2.zero, CursorMode.Auto);
         StartCoroutine(EyesActive());
     }
     IEnumerator EyesActive()

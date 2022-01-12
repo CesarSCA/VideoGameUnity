@@ -1,26 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System;
 
 public class GetKey: MonoBehaviour, IClicked
 {
-    public ItemKey item;
-    public Inventory inventory;
-    
-   private void Start()
-    {
-        inventory = GameObject.Find("Player").GetComponent<Inventory>();
-    }
+    public Item item;
+    public Key.KeyType key;
+    public static event Action OnGetGarageKey;
 
-   public void OnClickAction()
+    public void OnClickAction()
     {
-        if(inventory.isFull == true)
+        if(InventoryManager.Instance.inventory.isFull == true)
         {
             HelpTextManager.Instance.ShowText("Your inventory is full!");
         }
         else
         {
-            KeyManager.Instance.AddKey(item.key);
+            if(key == Key.KeyType.garage)
+            {
+                OnGetGarageKey?.Invoke();
+            }
             InventoryManager.Instance.AddItem(item);
             Destroy(gameObject);
         }

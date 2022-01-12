@@ -18,7 +18,25 @@ public class FirstCinematic : MonoBehaviour, ICinematic
     {
         StartCoroutine(FirstScene());
     }
-
+    private void Update()
+    {
+        if(ControlPlayer.Instance.executing == true)
+        {
+            if(Input.GetKeyDown(KeyCode.Space))
+            {
+                StopCinematic();
+            }
+        }
+    }
+    void StopCinematic()
+    {
+        ControlPlayer.Instance.StopCoroutines();
+        ControlPlayer.Instance.player.position = ToGo[0].position;
+        ControlPlayer.Instance.executing = false;
+        InGameController.Instance.UIForGame.SetActive(true);
+        OnFirstCinematic?.Invoke();
+        Destroy(gameObject);
+    }
     IEnumerator FirstScene()
     {
         ControlPlayer.Instance.MoveTo(ToGo[0]);

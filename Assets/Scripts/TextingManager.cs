@@ -46,7 +46,7 @@ public class TextingManager : MonoBehaviour
         lineIndex = 0;
         StartCoroutine(WriteLine(conversation));
     }
-    void EndTexting()
+    public void EndTexting()
     {
         lineIndex = 0;
         talking = false;

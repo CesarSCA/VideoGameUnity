@@ -4,12 +4,12 @@ using UnityEngine;
 using UnityEngine.UI;
 
 
-public class NoiseManager : MonoBehaviour
+public class AttentionManager : MonoBehaviour
 {
-    protected NoiseManager() { }
-    public float playerNoise = 0f;
+    protected AttentionManager() { }
+    public float playerAttention = 0f;
     public Slider sliderNoise;
-    public static NoiseManager Instance;
+    public static AttentionManager Instance;
     bool variationEffect = true;
 
     private void Awake()
@@ -33,8 +33,8 @@ public class NoiseManager : MonoBehaviour
     {
         for (float i = 0; i < noise; i++)
         {
-            playerNoise += 1;
-            sliderNoise.value = playerNoise / 100;
+            playerAttention += 1;
+            sliderNoise.value = playerAttention / 100;
             yield return new WaitForSeconds(0.01f);
         }
 
@@ -43,8 +43,8 @@ public class NoiseManager : MonoBehaviour
     {
         for (float i = 0; i < noise; i++)
         {
-            playerNoise -= 1;
-            sliderNoise.value = playerNoise / 100;
+            playerAttention -= 1;
+            sliderNoise.value = playerAttention / 100;
             yield return new WaitForSeconds(0.01f);
         }
     }

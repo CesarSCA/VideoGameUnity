@@ -8,6 +8,7 @@ public class Doors: MonoBehaviour, IClicked
     [SerializeField] public bool openned;
     [SerializeField] bool canOpen;
     [SerializeField] Animator anim;
+    [SerializeField] GetKey key;
 
     private void Start()
     {
@@ -16,23 +17,45 @@ public class Doors: MonoBehaviour, IClicked
 
     public void OnClickAction()
    {
-        if(KeyManager.Instance.ContainsKey(keyType) || keyType == Key.KeyType.nothing || canOpen == true)
+        if(InventoryManager.Instance.inventory.item != null)
         {
-            canOpen = true;
-            if (openned == true)
+           key = InventoryManager.Instance.inventory.item.itemObject.GetComponent<GetKey>();
+        } 
+
+        if (keyType == Key.KeyType.nothing || canOpen == true)
+        {
+            if(canOpen == true || keyType == Key.KeyType.nothing)
             {
-                anim.SetBool("IsOpen", false);
-                openned = false;
+                OpenDoor();
             }
-            else if (openned == false)
+        } else if( key != null)
+        {
+            if(key.key == keyType)
             {
-                anim.SetBool("IsOpen", true);
-                openned = true;
+                OpenDoor();
+            }
+            else
+            {
+                HelpTextManager.Instance.ShowText("You don´t have the key to open this door");
             }
         }
-        else if (keyType != Key.KeyType.nothing && !KeyManager.Instance.ContainsKey(keyType))
+        else
         {
             HelpTextManager.Instance.ShowText("You don´t have the key to open this door");
+        }
+    }
+    void OpenDoor()
+    {
+        canOpen = true;
+        if (openned == true)
+        {
+            anim.SetBool("IsOpen", false);
+            openned = false;
+        }
+        else if (openned == false)
+        {
+            anim.SetBool("IsOpen", true);
+            openned = true;
         }
     }
 }

@@ -56,27 +56,38 @@ public class PlayerCharacterController : MonoBehaviour
         cc.Move(velocity * Time.deltaTime);
         if(Input.GetKeyDown(KeyCode.Q))
         {
-            if(KeyManager.Instance.currentKey == Key.KeyType.nothing)
+
+            if(InventoryManager.Instance.inventory.isFull != true)
             {
-               HelpTextManager.Instance.ShowText("You don´t have any key");
-               return;
+                Debug.Log("You do not have any item");
             }
-            if(KeyManager.Instance.currentKey == Key.KeyType.first)
+            else
             {
-                Instantiate(keys[0], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            } else if (KeyManager.Instance.currentKey == Key.KeyType.second)
-            {
-                Instantiate(keys[1], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            } else if (KeyManager.Instance.currentKey == Key.KeyType.three)
-            {
-                Instantiate(keys[2], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
+                Instantiate(InventoryManager.Instance.inventory.item.itemObject, this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
+                InventoryManager.Instance.RemoveItem();
             }
-            else if (KeyManager.Instance.currentKey == Key.KeyType.garage)
-            {
-                Instantiate(keys[3], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            }
-            KeyManager.Instance.RemoveKey();
-            InventoryManager.Instance.RemoveItem();
+
+            //if(KeyManager.Instance.currentKey == Key.KeyType.nothing)
+            //{
+            //   HelpTextManager.Instance.ShowText("You don´t have any key");
+            //   return;
+            //}
+            //if(KeyManager.Instance.currentKey == Key.KeyType.first)
+            //{
+            //    Instantiate(keys[0], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
+            //} else if (KeyManager.Instance.currentKey == Key.KeyType.second)
+            //{
+            //    Instantiate(keys[1], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
+            //} else if (KeyManager.Instance.currentKey == Key.KeyType.three)
+            //{
+            //    Instantiate(keys[2], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
+            //}
+            //else if (KeyManager.Instance.currentKey == Key.KeyType.garage)
+            //{
+            //    Instantiate(keys[3], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
+            //}
+            //KeyManager.Instance.RemoveKey();
+            //InventoryManager.Instance.RemoveItem();
         }
     }
     void ForFirstCinematic()
@@ -108,7 +119,7 @@ public class PlayerCharacterController : MonoBehaviour
             if(startedWalking == false)
             {
                 startedWalking = true;
-                NoiseManager.Instance.IncreaseNoise(30);
+                AttentionManager.Instance.IncreaseNoise(30);
                 currentWalk.Play();
                 
             }
@@ -119,7 +130,7 @@ public class PlayerCharacterController : MonoBehaviour
             {
 
                 startedWalking = false;
-                NoiseManager.Instance.DecreaseNoise(30);
+                AttentionManager.Instance.DecreaseNoise(30);
                 currentWalk.Stop();
             }
         }

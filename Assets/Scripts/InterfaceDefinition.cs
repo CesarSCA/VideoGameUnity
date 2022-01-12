@@ -10,3 +10,7 @@ public interface ICinematic
 {
     void OnStartCinematic();
 }
+public interface Interactable
+{
+    void OnInteract();
+}

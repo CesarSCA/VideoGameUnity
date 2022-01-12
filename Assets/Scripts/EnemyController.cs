@@ -14,6 +14,7 @@ public class EnemyController : MonoBehaviour
     public bool canMove = true;
     [SerializeField] Transform lookAt;
     [SerializeField] GameObject canvas;
+    bool isInForest = false;
 
     void Awake()
     {
@@ -25,10 +26,12 @@ public class EnemyController : MonoBehaviour
     private void OnEnable()
     {
         FirstCinematic.OnFirstCinematic += ForFirstCinematic;
+        LeavePrincipalPath.OnForestEnter += PlayerEnteredForest;
     }
     private void OnDisable()
     {
         FirstCinematic.OnFirstCinematic -= ForFirstCinematic;
+        LeavePrincipalPath.OnForestEnter -= PlayerEnteredForest;
     }
 
     // Update is called once per frame
@@ -37,42 +40,53 @@ public class EnemyController : MonoBehaviour
         if(ControlPlayer.Instance.executing != true && canMove)
         {
             enemyAgent.destination = player.transform.position;
-            if(enemyAgent.velocity.magnitude > 0)
+            if (enemyAgent.velocity.magnitude > 0)
             {
-                if(animEnemy.GetBool("IsRunning") != true)
+                if (animEnemy.GetBool("IsRunning") != true)
                 {
                     animEnemy.SetBool("IsWalking", true);
                 }
-            } else
+            }
+            else
             {
                 animEnemy.SetBool("IsWalking", false);
             }
-            float noise = NoiseManager.Instance.playerNoise;
-            //switch (noise)
-            //{
-            //    case var _ when noise < 30:
-            //        enemySpeed = 2.6f;
-            //        break;
-            //    case (30):
-            //        enemySpeed = 3f;
-            //        break;
-            //    case (60):
-            //        enemySpeed = 3.3f;
-            //        break;
-            //    case (80):
-            //        enemySpeed = 3.5f;
-            //        break;
-            //    case (100):
-            //        enemySpeed = 3.8f;
-            //        break;
-            //}
+
+            if (isInForest)
+            {
+                MoveByNoise();
+            }
+
+        }
+    }
+    void MoveByNoise()
+    {
+        float attention = AttentionManager.Instance.playerAttention;
+        switch (attention)
+        {
+            case (0):
+                enemyAgent.speed = 1f;
+                break;
+            case var _ when attention < 30 && attention > 0:
+                enemyAgent.speed = 3f;
+                break;
+            case var _ when attention >= 30 && attention < 40:
+                enemyAgent.speed = 3.7f;
+                break;
+            case (60):
+                enemyAgent.speed = 3.3f;
+                break;
+            case (80):
+                enemyAgent.speed = 3.5f;
+                break;
+            case (100):
+                enemyAgent.speed = 3.8f;
+                break;
         }
     }
     void ForFirstCinematic()
     {
         canMove = true;
-        animEnemy.SetBool("IsWalking", false);
-        animEnemy.SetBool("IsRunning", true);
         enemyAgent.speed = 4f;
     }
 
@@ -116,6 +130,7 @@ public class EnemyController : MonoBehaviour
     }
     IEnumerator KillingPlayer(Transform player)
     {
+        animEnemy.SetBool("IsRunning", true);
         canvas.SetActive(false);
         ControlPlayer.Instance.executing = true;
         canMove = false;
@@ -131,5 +146,10 @@ public class EnemyController : MonoBehaviour
             player.position = deathZone.position;
             yield return null;
         }
+    }
+    void PlayerEnteredForest()
+    {
+        isInForest = true;
+        enemyAgent.speed = 3.2f;
     }
 }

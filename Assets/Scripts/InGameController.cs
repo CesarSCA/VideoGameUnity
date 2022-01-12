@@ -7,7 +7,9 @@ public class InGameController : MonoBehaviour
     // Start is called before the first frame update
     protected InGameController() { }
     public static InGameController Instance;
+    [SerializeField] public GameObject UIForGame;
     [SerializeField] GameObject UIInHouse;
+    [SerializeField] GameObject UIInForest;
     [SerializeField] GameObject UICinematicText;
     [SerializeField] GameObject enParticles;
     [SerializeField] GameObject onPauseMenu;
@@ -21,6 +23,7 @@ public class InGameController : MonoBehaviour
         SecondCinematic.OnSecondCinematic += SecondCinematicMethod;
         FirstFinalCinematic.OnFirstFinal += FirstFinal;
         EnemyController.OnPlayerDeath += EndGame;
+        LeavePrincipalPath.OnForestEnter += LeaveForestMethod;
     }
     private void OnDisable()
     {
@@ -28,6 +31,7 @@ public class InGameController : MonoBehaviour
         SecondCinematic.OnSecondCinematic -= SecondCinematicMethod;
         FirstFinalCinematic.OnFirstFinal -= FirstFinal;
         EnemyController.OnPlayerDeath -= EndGame;
+        LeavePrincipalPath.OnForestEnter -= LeaveForestMethod;
     }
     void Start()
     {
@@ -77,6 +81,10 @@ public class InGameController : MonoBehaviour
         enParticles.SetActive(false);
         UIInHouse.SetActive(true);
         SecondCinematic.OnSecondCinematic -= SecondCinematicMethod;
+    }
+    public void LeaveForestMethod()
+    {
+        UIInForest.SetActive(true);
     }
     public void FirstFinal()
     {

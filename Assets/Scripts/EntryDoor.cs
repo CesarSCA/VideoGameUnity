@@ -5,8 +5,9 @@ using UnityEngine;
 public class EntryDoor : MonoBehaviour, IClicked
 {
         [SerializeField] public bool openned = true;
-        [SerializeField] Animator anim;
+        [SerializeField] public Animator anim;
 
+ 
         private void Start()
         {
             anim = GetComponent<Animator>();
@@ -15,11 +16,13 @@ public class EntryDoor : MonoBehaviour, IClicked
         }
     private void OnEnable()
     {
-        GetGarageKey.OnGetGarageKey += OpenDoor;
+        GetKey.OnGetGarageKey += OpenDoor;
+        LeavePrincipalPath.OnForestEnter += CloseDoor;
     }
     private void OnDisable()
     {
-        GetGarageKey.OnGetGarageKey -= OpenDoor;
+        GetKey.OnGetGarageKey -= OpenDoor;
+        LeavePrincipalPath.OnForestEnter -= CloseDoor;
     }
 
     public void OnClickAction()
@@ -30,6 +33,11 @@ public class EntryDoor : MonoBehaviour, IClicked
                     openned = false;
                 }
         }
+    private void CloseDoor()
+    {
+        anim.SetBool("IsOpen", false);
+        openned = false;
+    }
     private void OpenDoor()
     {
         if(TimeController.Instance.day >= 1)

@@ -5,27 +5,20 @@ using System;
 
 public class GetGarageKey : MonoBehaviour, IClicked
 {
-    public ItemKey item;
-    public Inventory inventory;
-    public static event Action OnGetGarageKey;
+    public Item item;
+    public Key.KeyType key;
 
-    private void Start()
-    {
-        inventory = GameObject.Find("Player").GetComponent<Inventory>();
-    }
 
     public void OnClickAction()
     {
-        if (inventory.isFull == true)
+        if (InventoryManager.Instance.inventory.isFull == true)
         {
             HelpTextManager.Instance.ShowText("Your inventory is full!");
         }
         else
         {
-            KeyManager.Instance.AddKey(item.key);
             InventoryManager.Instance.AddItem(item);
             Destroy(gameObject);
-            OnGetGarageKey?.Invoke();
         }
 
 
