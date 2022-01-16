@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 using UnityEngine.AI;
@@ -40,16 +39,20 @@ public class EnemyController : MonoBehaviour
         if(ControlPlayer.Instance.executing != true && canMove)
         {
             enemyAgent.destination = player.transform.position;
-            if (enemyAgent.velocity.magnitude > 0)
+            switch (enemyAgent.speed)
             {
-                if (animEnemy.GetBool("IsRunning") != true)
-                {
+                case(0):
+                    animEnemy.SetBool("IsRunning", false);
+                    animEnemy.SetBool("IsWalking", false);
+                    break;
+                case var _ when enemyAgent.speed < 0.1f && enemyAgent.speed > 3.9:
+                    animEnemy.SetBool("IsRunning", false);
                     animEnemy.SetBool("IsWalking", true);
-                }
-            }
-            else
-            {
-                animEnemy.SetBool("IsWalking", false);
+                    break;
+                case var _ when enemyAgent.speed >= 4f:
+                    animEnemy.SetBool("IsWalking", false);
+                    animEnemy.SetBool("IsRunning", true);
+                    break;
             }
 
             if (isInForest)
@@ -73,21 +76,12 @@ public class EnemyController : MonoBehaviour
             case var _ when attention >= 30 && attention < 40:
                 enemyAgent.speed = 3.7f;
                 break;
-            case (60):
-                enemyAgent.speed = 3.3f;
-                break;
-            case (80):
-                enemyAgent.speed = 3.5f;
-                break;
-            case (100):
-                enemyAgent.speed = 3.8f;
-                break;
         }
     }
     void ForFirstCinematic()
     {
         canMove = true;
-        enemyAgent.speed = 4f;
+        enemyAgent.speed = 4.05f;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -106,11 +100,11 @@ public class EnemyController : MonoBehaviour
             {
                 if (other.GetComponent<Doors>().openned == false)
                 {
-                    enemyAgent.isStopped = true;
+                    enemyAgent.speed = 0;
                 }
                 else
                 {
-                    enemyAgent.isStopped = false;
+                    enemyAgent.speed = 4.05f;
                 }
 
             }
@@ -118,12 +112,11 @@ public class EnemyController : MonoBehaviour
             {
                 if (other.GetComponent<EntryDoor>().openned == false)
                 {
-                    enemyAgent.isStopped = true;
-                    animEnemy.SetBool("IsRunning", false);
+                    enemyAgent.speed = 0;
                 }
                 else
                 {
-                    enemyAgent.isStopped = false;
+                    enemyAgent.speed = 4.05f;
                 }
             }
         }

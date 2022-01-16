@@ -1,34 +1,16 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class InventoryManager: MonoBehaviour
 {
-    // Start is called before the first frame update
     protected InventoryManager() { }
-
     public static InventoryManager Instance;
- 
-
     public Inventory inventory;
 
     private void Awake()
     {
-
         Instance = this;
         inventory = GameObject.Find("Player").GetComponent<Inventory>();
         inventory.slot.enabled = false;
-    }
-    private void Update()
-    {
-        if(inventory.item != null)
-        {
-            if (inventory.item.itemObject.GetComponent<GetItem>())
-            {
-                Debug.Log("anda");
-            }
-        }
-
     }
     public void AddItem(Item item)
     {

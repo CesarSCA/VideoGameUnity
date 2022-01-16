@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -17,7 +15,7 @@ public class GetKey: MonoBehaviour, IClicked
         }
         else
         {
-            if(key == Key.KeyType.garage)
+            if (key == Key.KeyType.garage && TimeController.Instance.day >= 1)
             {
                 OnGetGarageKey?.Invoke();
             }

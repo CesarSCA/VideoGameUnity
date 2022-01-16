@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EntryDoor : MonoBehaviour, IClicked
@@ -40,10 +38,7 @@ public class EntryDoor : MonoBehaviour, IClicked
     }
     private void OpenDoor()
     {
-        if(TimeController.Instance.day >= 1)
-        {
             anim.SetBool("IsOpen", true);
             openned = true;
-        }
     }
 }

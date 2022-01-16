@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using System;
 
@@ -13,15 +12,23 @@ public class SecondCinematic : MonoBehaviour, ICinematic
     public static event Action OnSecondCinematic;
     public void OnStartCinematic()
     {
-        if(entryDoor.openned != true)
-        {
             StartCoroutine(SecondScene());
-        }
     }
     void Start()
     {
         text = GetComponent<TextingComponent>();
         entryDoor = door.GetComponent<EntryDoor>();
+    }
+    void Update()
+    {
+        Timer noStart = GetComponent<Timer>();
+        if(entryDoor.openned == true)
+        {
+            noStart.noStart = true;
+        } else
+        {
+            noStart.noStart = false;
+        }
     }
 
     IEnumerator SecondScene()

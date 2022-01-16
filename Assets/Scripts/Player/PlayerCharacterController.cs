@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerCharacterController : MonoBehaviour
@@ -13,7 +11,6 @@ public class PlayerCharacterController : MonoBehaviour
     private float Gravity = -9.81f;
     private Vector3 velocity;
     private float ejeX = 0f;
-    [SerializeField] private GameObject[] keys;
     private CharacterController cc;
     public bool startedWalking = false;
 
@@ -66,28 +63,6 @@ public class PlayerCharacterController : MonoBehaviour
                 Instantiate(InventoryManager.Instance.inventory.item.itemObject, this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
                 InventoryManager.Instance.RemoveItem();
             }
-
-            //if(KeyManager.Instance.currentKey == Key.KeyType.nothing)
-            //{
-            //   HelpTextManager.Instance.ShowText("You don´t have any key");
-            //   return;
-            //}
-            //if(KeyManager.Instance.currentKey == Key.KeyType.first)
-            //{
-            //    Instantiate(keys[0], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            //} else if (KeyManager.Instance.currentKey == Key.KeyType.second)
-            //{
-            //    Instantiate(keys[1], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            //} else if (KeyManager.Instance.currentKey == Key.KeyType.three)
-            //{
-            //    Instantiate(keys[2], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            //}
-            //else if (KeyManager.Instance.currentKey == Key.KeyType.garage)
-            //{
-            //    Instantiate(keys[3], this.transform.position - new Vector3(0, 0.96f, 0), this.transform.rotation);
-            //}
-            //KeyManager.Instance.RemoveKey();
-            //InventoryManager.Instance.RemoveItem();
         }
     }
     void ForFirstCinematic()

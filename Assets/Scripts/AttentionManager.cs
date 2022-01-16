@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -10,7 +9,6 @@ public class AttentionManager : MonoBehaviour
     public float playerAttention = 0f;
     public Slider sliderNoise;
     public static AttentionManager Instance;
-    bool variationEffect = true;
 
     private void Awake()
     {
@@ -51,6 +49,7 @@ public class AttentionManager : MonoBehaviour
 
     IEnumerator SliderVariation()
     {
+        bool variationEffect = true;
         float temp = 0.07f;
         while(variationEffect)
         {

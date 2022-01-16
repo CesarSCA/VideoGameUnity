@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class MiniCinematics : MonoBehaviour
@@ -24,6 +23,10 @@ public class MiniCinematics : MonoBehaviour
 
             if (cinematic != null)
             {
+                if(obj.GetComponent<Timer>().noStart == true)
+                {
+                    yield break;
+                }
                 float time = obj.GetComponent<Timer>().time;
                 InGameController.Instance.UIForGame.SetActive(false);
                 ControlPlayer.Instance.executing = true;
