@@ -12,7 +12,6 @@ public class ObjectClicker : MonoBehaviour
             {
                 if (hit.transform != null)
                 {
-                    Debug.Log(hit.transform.name);
                     IClicked click = hit.transform.gameObject.GetComponent<IClicked>();
                     if(click != null)
                     {

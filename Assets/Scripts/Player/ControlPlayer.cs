@@ -79,14 +79,15 @@ public class ControlPlayer : MonoBehaviour
             Vector3 target = objDir.position - player.position;
             while (target.magnitude > 0.1f)
             {
+                if (objDir == null)
+                {
+                    yield break;
+                }
                 target = objDir.position - player.position;
                 cc.Move(target.normalized * 2 * Time.deltaTime);
                 yield return null;
             }
         }
-        if(objDir == null)
-        {
-            yield break;
-        }
+
     }
 }
